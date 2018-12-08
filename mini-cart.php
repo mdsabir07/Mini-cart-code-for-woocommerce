@@ -101,7 +101,7 @@ function wnew_shop_woocommerce_cart_link_fragment( $fragments ) {
 	global $woocommerce;
 	ob_start();
 	wnew_shop_woocommerce_cart_link();
-	$fragments['a.cart-contents'] = ob_get_clean();
+	$fragments['.wns-mini-cart'] = ob_get_clean();
 
 	return $fragments;
 }
