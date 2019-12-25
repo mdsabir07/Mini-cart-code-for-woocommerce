@@ -79,12 +79,52 @@ function wnew_shop_woocommerce_cart_link() {
 	global $woocommerce;
 	$total = $woocommerce->cart->total;
 
-	$items = $woocommerce->cart->get_cart(); ?>
+	$items = $woocommerce->cart->get_cart(); 
+	
+	$cartcount = WC()->cart->get_cart_contents_count();
+	if ($cartcount > 0) { echo $cartcount; }
+	?>
 	
 	<div class="wns-mini-cart">
 		<div class="wns-mini-cart-icon">
-			<a href=""><i class="fa fa-shopping-cart"></i></a>
-			<span class="wns-mini-cart-count"></span>
+			<a href="<?php echo esc_url(wc_get_cart_url()); ?>"><i class="fa fa-shopping-cart"></i></a>
+			<span class="wns-mini-cart-count"><?php echo $cartcount; ?></span>
+		</div>
+		
+		<?php if(!empty($items)) : ?>
+		<div class="wns-mini-cart-items">
+			<?php woocommerce_mini_cart(); ?>
+		</div>
+		<?php endif; ?>
+	</div>
+
+	<?php
+}
+
+function wnew_shop_woocommerce_cart_link_fragment( $fragments ) {
+	global $woocommerce;
+	ob_start();
+	wnew_shop_woocommerce_cart_link();
+	$fragments['.wns-mini-cart'] = ob_get_clean();
+
+	return $fragments;
+}
+add_filter( 'woocommerce_add_to_cart_fragments', 'wnew_shop_woocommerce_cart_link_fragment' );
+
+function wnew_shop_woocommerce_cart_link() {
+	global $woocommerce;
+	$total = $woocommerce->cart->total;
+
+	$items = $woocommerce->cart->get_cart(); 
+	
+	$cartcount = WC()->cart->get_cart_contents_count();
+	if ($cartcount > 0) { echo $cartcount; }
+	?>
+	
+	<div class="wns-mini-cart">
+		<div class="wns-mini-cart-icon">
+			<a href="<?php echo esc_url(wc_get_cart_url()); ?>"><i class="fa fa-shopping-cart"></i></a>
+			<span class="wns-mini-cart-count"><?php echo $cartcount; ?></span>
 		</div>
 		
 		<?php if(!empty($items)) : ?>
